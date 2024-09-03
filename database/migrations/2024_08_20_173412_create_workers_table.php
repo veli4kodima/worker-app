@@ -19,7 +19,11 @@ return new class extends Migration
             $table->tinyInteger('age')->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_married')->default(0);
+
+            $table->foreignId('position_id')->nullable()->constrained('positions')->onDelete('cascade');
+
             $table->timestamps();
+
         });
     }
 
