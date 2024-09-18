@@ -21,11 +21,11 @@
         </div>
 
         <div class="mt-6">
-            <a href="{{ route('worker.edit', $worker->id) }}" class="text-blue-500 hover:underline">Редактировать</a>
+            <a href="{{ route('workers.edit', $worker->id) }}" class="text-blue-500 hover:underline">Редактировать</a>
         </div>
 
         <div class="mt-6">
-            <form action="{{ route('worker.delete', $worker->id) }}" method="post">
+            <form action="{{ route('workers.destroy', $worker->id) }}" method="post">
                 @csrf
                 @method('Delete')
                 <input type="submit" value="Удалить" class="text-blue-500 hover:underline"></input>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="mt-6">
-            <a href="{{ route('worker.index') }}" class="text-blue-500 hover:underline">Вернуться к списку</a>
+            <a href="{{ route('workers.index') }}" class="text-blue-500 hover:underline">Вернуться к списку</a>
         </div>
     </div>
 </div>

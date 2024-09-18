@@ -22,6 +22,7 @@ return new class extends Migration
 
             $table->foreignId('position_id')->nullable()->constrained('positions')->onDelete('cascade');
 
+            $table->softDeletes();
             $table->timestamps();
 
         });

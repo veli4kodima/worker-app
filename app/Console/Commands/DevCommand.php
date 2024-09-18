@@ -2,11 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\SomeJob;
+use App\Models\Avatar;
+use App\Models\Client;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\Profile;
 use App\Models\Project;
-use App\Models\ProjectWorker;
+use App\Models\Tag;
 use App\Models\Worker;
 use Illuminate\Console\Command;
 
@@ -31,17 +34,8 @@ class DevCommand extends Command
      */
     public function handle()
     {
-//        $this->prepareData();
-//        $this->prepareManyToMany();
 
-        $worker = Worker::find(2);
-//
-//        $positions = Position::where('department_id', $department->id)->where('title', 'Boss')->first();
-//
-//        $worker = Worker::where('position_id', $positions->id)->first();
-//        dd($worker->toArray());
-
-        dd($worker->position->department->toArray());
+        SomeJob::dispatchSync()->onQueue('some_queue');
 
         return 0;
     }
@@ -138,7 +132,6 @@ class DevCommand extends Command
         $worker6 = Worker::create($workerData6);
 
         $profileData1 = [
-            "worker_id" => $worker1->id,
             "city" => "Tokyo",
             "skill" => "Backend",
             "experience" => 5,
@@ -146,7 +139,6 @@ class DevCommand extends Command
         ];
 
         $profileData2 = [
-            "worker_id" => $worker2->id,
             "city" => "Rio",
             "skill" => "Boss",
             "experience" => 10,
@@ -154,7 +146,6 @@ class DevCommand extends Command
         ];
 
         $profileData3 = [
-            "worker_id" => $worker3->id,
             "city" => "Berlin",
             "skill" => "Frontend",
             "experience" => 1,
@@ -162,7 +153,6 @@ class DevCommand extends Command
         ];
 
         $profileData4 = [
-            "worker_id" => $worker4->id,
             "city" => "Madrid",
             "skill" => "Admin",
             "experience" => 3,
@@ -170,7 +160,6 @@ class DevCommand extends Command
         ];
 
         $profileData5 = [
-            "worker_id" => $worker5->id,
             "city" => "Paris",
             "skill" => "Backend",
             "experience" => 3,
@@ -178,19 +167,24 @@ class DevCommand extends Command
         ];
 
         $profileData6 = [
-            "worker_id" => $worker6->id,
             "city" => "Ottawa",
             "skill" => "Admin",
             "experience" => 3,
             "finished_study_at" => "2023-10-12",
         ];
 
-        $profile1 = Profile::create($profileData1);
-        $profile2 = Profile::create($profileData2);
-        $profile3 = Profile::create($profileData3);
-        $profile4 = Profile::create($profileData1);
-        $profile5 = Profile::create($profileData2);
-        $profile6 = Profile::create($profileData3);
+        $worker1->profile()->create($profileData1);
+        $worker2->profile()->create($profileData2);
+        $worker3->profile()->create($profileData3);
+        $worker4->profile()->create($profileData4);
+        $worker5->profile()->create($profileData5);
+        $worker6->profile()->create($profileData6);
+//        $profile1 = Profile::create($profileData1);
+//        $profile2 = Profile::create($profileData2);
+//        $profile3 = Profile::create($profileData3);
+//        $profile4 = Profile::create($profileData1);
+//        $profile5 = Profile::create($profileData2);
+//        $profile6 = Profile::create($profileData3);
 
 //        dd($profile1);
     }
@@ -198,11 +192,12 @@ class DevCommand extends Command
     private function prepareManyToMany()
     {
         $workerBackend = Worker::find(1);
-        $workerManager1 = Worker::find(2);
         $workerFrontend = Worker::find(3);
+        $workerManager1 = Worker::find(2);
+        $workerManager2 = Worker::find(6);
         $workerDesign1 = Worker::find(4);
         $workerDesign2 = Worker::find(5);
-        $workerManager2 = Worker::find(6);
+
 
         $project1 = Project::create([
             'title' => 'Shop'
@@ -211,45 +206,18 @@ class DevCommand extends Command
             'title' => 'Blog'
         ]);
 
-        ProjectWorker::create([
-            'project_id' => $project1->id,
-            'worker_id' => $workerManager1->id,
+        $project1->workers()->attach([
+            $workerManager1->id,
+            $workerBackend->id,
+            $workerDesign1->id,
+            $workerFrontend->id
         ]);
 
-        ProjectWorker::create([
-            'project_id' => $project1->id,
-            'worker_id' => $workerBackend->id,
-        ]);
-
-        ProjectWorker::create([
-            'project_id' => $project1->id,
-            'worker_id' => $workerFrontend->id,
-        ]);
-
-        ProjectWorker::create([
-            'project_id' => $project1->id,
-            'worker_id' => $workerDesign1->id,
-        ]);
-
-
-        ProjectWorker::create([
-            'project_id' => $project2->id,
-            'worker_id' => $workerManager2->id,
-        ]);
-
-        ProjectWorker::create([
-            'project_id' => $project2->id,
-            'worker_id' => $workerBackend->id,
-        ]);
-
-        ProjectWorker::create([
-            'project_id' => $project2->id,
-            'worker_id' => $workerFrontend->id,
-        ]);
-
-        ProjectWorker::create([
-            'project_id' => $project2->id,
-            'worker_id' => $workerDesign2->id,
+        $project2->workers()->attach([
+            $workerManager2->id,
+            $workerBackend->id,
+            $workerDesign2->id,
+            $workerFrontend->id
         ]);
 
     }

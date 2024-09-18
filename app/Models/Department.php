@@ -14,11 +14,12 @@ class Department extends Model
 
     public function boss()
     {
-        return $this->hasOneThrough(Worker::class, Position::Class, 'department_id', 'position_id', 'id', 'id')->where('position_id', 4);
+        return $this->hasOneThrough(Worker::class, Position::Class)
+            ->where('position_id', 4);
     }
 
     public function workers() {
-        return $this->hasManyThrough(Worker::class, Position::Class, 'department_id', 'position_id', 'id', 'id');
+        return $this->hasManyThrough(Worker::class, Position::Class);
     }
 
 }

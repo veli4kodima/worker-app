@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
             'email' => 'required|email|max:255',
             'age' => 'nullable|integer|min:0',
             'description' => 'nullable|string',
-            'is_married' => 'required|boolean',
+            'is_married' => ['required', 'boolean'],
         ];
     }
 

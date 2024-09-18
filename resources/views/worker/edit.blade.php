@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('edit')
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
-    <form action="{{ route('worker.update', $worker->id) }}" method="post" class="w-full max-w-lg p-4 bg-white shadow-md rounded">
+    <form action="{{ route('workers.update', $worker->id) }}" method="post" class="w-full max-w-lg p-4 bg-white shadow-md rounded">
         @csrf
         @method('PUT')
         <!-- поля формы здесь -->

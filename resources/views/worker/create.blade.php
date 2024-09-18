@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('create')
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
-    <form action="{{ route('worker.store') }}" method="POST" class="w-full max-w-lg p-4 bg-white shadow-md rounded">
+    <form action="{{ route('workers.store') }}" method="POST" class="w-full max-w-lg p-4 bg-white shadow-md rounded">
         @csrf
         <!-- поля формы здесь -->
         <div class="mb-4">

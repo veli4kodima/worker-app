@@ -4,13 +4,15 @@
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold">Список Рабочих</h1>
-        <a href="{{ route('worker.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        @can('create', Worker::class)
+        <a href="{{ route('workers.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Добавить сотрудника
         </a>
+        @endcan
     </div>
 
     <div class="p-4 bg-white shadow rounded-lg mb-5">
-        <form action="{{route('worker.index')}}">
+        <form action="{{route('workers.index')}}">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -71,22 +73,26 @@
                     <p class="text-gray-700">Возраст: {{ $worker->age }}</p>
                 </div>
                 <div class="mt-4">
-                    <a href="{{ route('worker.show', $worker->id) }}" class="text-blue-500 hover:underline">Подробнее</a>
+                    <a href="{{ route('workers.show', $worker->id) }}" class="text-blue-500 hover:underline">Подробнее</a>
                 </div>
+                @can('update', $worker)
                 <div class="mt-4">
-                    <a href="{{ route('worker.edit', $worker->id) }}" class="text-blue-500 hover:underline">Редактировать</a>
+                    <a href="{{ route('workers.edit', $worker->id) }}" class="text-blue-500 hover:underline">Редактировать</a>
                 </div>
+                @endcan
+                @can('delete', $worker)
                 <div class="mt-4">
-                    <form action="{{ route('worker.delete', $worker->id) }}" method="post">
+                    <form action="{{ route('workers.destroy', $worker->id) }}" method="post">
                         @csrf
                         @method('Delete')
                         <input type="submit" value="Удалить" class="text-blue-500 hover:underline"></input>
                     </form>
                 </div>
+                @endcan
             </div>
         @endforeach
             <div class="mt-4">
-                {{ $workers->withQueryString()->links('pagination::tailwind') }}
+                {{ $workers->withQueryString(5)->links('pagination::tailwind') }}
             </div>
     </div>
 </div>
