@@ -3,18 +3,24 @@
 namespace App\Models;
 
 use App\Events\Worker\CreatedEvent;
+use App\Http\Filters\V1\AbstractFilter;
+use App\Models\Traits\HasFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PhpParser\Builder;
 
 class Worker extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use HasFilter;
 
     protected $table = 'workers';
 
     protected $guarded = false;
+
+
 
     protected static function booted()
     {
